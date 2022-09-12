@@ -1,0 +1,20 @@
+Metadata-Version: 2.1
+Name: ScraperX
+Version: 0.1.0
+Summary: A WebScraping Library
+Home-page: https://github.com/tdncode420/ScraperX
+Author: Renegade
+Author-email: renegade420@gmail.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Development Status :: 1 - Planning
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Operating System:: MacOS
+Classifier: Operating System:: Microsoft:: Windows
+Classifier: Natural Language:: English
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 3
+
+UNKNOWN
+
