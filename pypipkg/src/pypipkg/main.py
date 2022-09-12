@@ -4,13 +4,9 @@
 
 '''
 
-import os
 import sys
-import importlib.util
 import constants as _C
 import configuration as _CFG
-from tmps import *
-from licenses import *
 from utils import *
 
 # shorten package command
@@ -22,8 +18,12 @@ def initNew(args):
 
     if len(args) == 0:
         cfg = _CFG.interactiveCreate()
-    if args[0] == 'skip':
+    if args[0] == '--use-file':
         cfg = _CFG.noninteractiveCreate()
+
+    if cfg == False:
+        return
+
     _pu.createNewPkgStruct(cfg)
 
 
@@ -49,8 +49,8 @@ def showHelp(args):
 
     # possible strings to invoke the 'conf' message
     cfg_strs = ['conf', 'cfg', 'config', 'configuration']
-
-    # if it's found
+    
+    #if the arg given is one of the conf invoking strings
     if args[0] in cfg_strs:
 
         # display the conf message
@@ -75,10 +75,10 @@ def __init__():
     arg1 = ARGS_LIST.pop(0).strip()
 
     # if the '-help' flag was passed
-    if arg1 == '-help':
+    if arg1 == '--help':
 
-        # remove the prepending hyphen (-)
-        # it's only required for syntatic sugaring
+        # remove the prepending hyphens (--)
+        # the (--) is only required for syntatic sugaring
         arg1 = 'help'
 
     # if first arg is valid...
