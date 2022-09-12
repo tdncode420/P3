@@ -17,23 +17,14 @@ def interactiveCreate():
         # add a default name
         cfg.name = "new_project" + randomKey.generate()
 
-    # get the path to the source directory from user
-    src = input("Source directory path (default='.'): ")
-
-    # if no src path was provided
-    if len(src) == 0:
-
-        # default to the current directory
-        src = os.getcwd()
-
-    # start by getting the output directory from user
+    # get the output directory from user
     out = input('Package directory: ')
 
     # if the directory provided is already created
     if os.path.isdir(out):
 
         # set it on the cfg dict
-        cfg.out = out
+        cfg.dir = out
     else:
 
         # else ask to create this dir
@@ -50,9 +41,16 @@ def interactiveCreate():
         os.mkdir(out)
 
         # set it on the cfg dict
-        cfg.out = out
+        cfg.dir = out
         
     def getBTools():
+        '''Get build tools to use
+        
+            A method to get the build tools to use from the user. 
+            If the provided answer is not valid, this method will rerun.
+            If the provided answer is valid, it will be returned
+        '''
+        
         validBTools = ['1', '2', '3', '4']
         bToolsList = ['setuptools', 'Hatchling', 'Flit', 'PDM']
 
@@ -64,11 +62,20 @@ def interactiveCreate():
         else:
             return _bToolsList[int(bToolsArg) - 1]
     
+    # get the build tools to use from the user
     bTools = getBTools()
 
+    # set it on the cfg dict
     cfg.build_tools = bTools
     
     def getLicense():
+        '''Get license to use
+        
+            A method to get the license to use from the user. 
+            If the provided answer is not valid, this method will rerun.
+            If the provided answer is valid, it will be returned
+        '''
+
         validPkgLs = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
         lsList = ['none', 'apache', 'boost', 'agpl', 'gpl', 'lgpl', 'mit', 'moz', 'un']
         _pkgL = input('Choose a license to use (enter a number):\n\t1) None (default)\n\t2) Apache 2.0\n\t3) Boost Software 1.0\n\t4) GNU AGPLv3\n\t5) GNU GPLv3\n\t6) GNU LGPLv3\n\t7) MIT (recommended)\n\t8)Mozilla Public 2.0\n\t9) Unlicense')
@@ -77,10 +84,19 @@ def interactiveCreate():
         else:
             return lsList[int(_pkgL) - 1]
 
+    # get the license to use from the user
     pkgL = getLicense()
     
+    # set it on the cfg dict
     cfg.license = pkgL
+
+    # create and write the p3conf.json file
+    cfgFile = os.path.join(os.getcwd(), 'p3conf.json')
+    f = open(cfgFile, 'a')
+    f.write(json.dumps(cfg))
+    f.close()
     
+    cfg.src_path = os.path.join()
     # create the project structure
     return cfg
 
@@ -98,8 +114,7 @@ def noninteractiveCreate():
 
     defaults = {
         'name': 'new_package' + randomKey.generate(),
-        'src': os.getcwd(),
-        'out': buildOut(),
+        'dir': None,
         'build_tools': 'setuptools',
         'license': 'none'
     }
@@ -132,6 +147,11 @@ def noninteractiveCreate():
             cfg[key] = cfgJson[key]
         else:
             cfg[key] = defaults[key]
+    
+    if cfg.dir is None:
+        cfgdir = os.path.join(os.getcwd(), cfg.name)
+        os.mkdir(cfgdir)
+        cfg.dir = cfgdir
 
     return cfg
     
